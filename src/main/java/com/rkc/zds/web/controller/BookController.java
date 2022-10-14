@@ -110,7 +110,7 @@ public class BookController {
 					httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers",
 							"Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin, apiKey");
 
-					httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:8089");
+					httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:4200");
 
 					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
@@ -146,7 +146,7 @@ public class BookController {
 					httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers",
 							"Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin, apiKey");
 
-					httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:8089");
+					httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:4200");
 
 					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
