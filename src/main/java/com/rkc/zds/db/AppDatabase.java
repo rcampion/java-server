@@ -42,26 +42,6 @@ import com.rkc.zds.exceptions.AppException;
 import com.rkc.zds.exceptions.AppMessage;
 import com.rkc.zds.utils.AppLogger;
 
-/*
-import com.rkc.zds.web.spring.wiki.model.Interwiki;
-import com.rkc.zds.web.spring.wiki.model.Namespace;
-import com.rkc.zds.web.spring.wiki.model.Role;
-import com.rkc.zds.web.spring.wiki.model.Topic;
-import com.rkc.zds.web.spring.wiki.model.TopicVersion;
-import com.rkc.zds.web.spring.wiki.model.VirtualWiki;
-import com.rkc.zds.web.spring.wiki.model.WikiGroup;
-import com.rkc.zds.web.spring.wiki.model.WikiUser;
-import com.rkc.zds.web.spring.wiki.parser.ParserException;
-import com.rkc.zds.web.spring.wiki.parser.ParserOutput;
-import com.rkc.zds.web.spring.wiki.parser.ParserUtil;
-import com.rkc.zds.web.spring.wiki.parser.WikiLink;
-import com.rkc.zds.web.spring.wiki.utils.Encryption;
-import com.rkc.zds.web.spring.wiki.utils.ResourceUtil;
-import com.rkc.zds.web.spring.wiki.utils.WikiLogger;
-import com.rkc.zds.web.spring.wiki.utils.WikiUtil;
-//import org.springframework.transaction.TransactionStatus;
-*/
-
 /**
  * This class contains general database utility methods that are useful for a
  * variety of Application database functions, including setup and upgrades.
