@@ -13,7 +13,7 @@ import com.rkc.zds.utils.Pagination;
 public class BookServiceImpl implements BookService {
 
 	@Override
-	public Page<BookDto> findBooks(Pagination pagination) {
+	public PaginationPage<BookDto> findBooks(Pagination pagination) {
 
 		List<BookDto> bookList = new ArrayList<BookDto>();		
 		try {
@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
 		//PageRequest pageRequest = PageRequest.of(0, size);
 
 		//PageImpl<BookDto> page = new PageImpl<BookDto>(bookList, pageRequest, size);
-		Page page = new Page(bookList, size);
+		PaginationPage page = new PaginationPage(bookList, size);
 		return page;
 	}
 

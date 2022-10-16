@@ -16,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.rkc.zds.JavaServerApp;
 import com.rkc.zds.dto.BookDto;
 import com.rkc.zds.exceptions.DataAccessException;
+import com.rkc.zds.service.BookService;
+import com.rkc.zds.service.impl.BookServiceImpl;
+import com.rkc.zds.service.impl.PaginationPage;
 import com.rkc.zds.utils.Pagination;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -24,12 +27,13 @@ import com.sun.net.httpserver.HttpHandler;
 public class BookController {
 
 	private static BookController instance = null;
-
+	private BookService bookService;
+	
 	private String strResponse = "";
 	private boolean testOK = true; // Set to true if want to test positive response.
 
 	private BookController() {
-
+		this.bookService = new BookServiceImpl();
 	}
 
 	public static BookController getInstance() {
@@ -172,18 +176,22 @@ public class BookController {
 
 					httpExchange.getResponseHeaders().add("Content-type", "application/json");
 				
+					/*
 					List<BookDto> response = null;
 					try {
 						response = JavaServerApp.getDataHandler().getBooks(pagination, true);
 					} catch (DataAccessException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}				
+					*/
 
+					PaginationPage<BookDto> page = bookService.findBooks(pagination);
+					
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 					String json = null;
 					try {
-						json = ow.writeValueAsString(response);
+						json = ow.writeValueAsString(page);
 					} catch (JsonProcessingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
