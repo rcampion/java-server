@@ -106,6 +106,7 @@ public class BookController {
 			String[] segments = uri.getPath().split("/");
 			String lastSegment = segments[segments.length - 1];
 			if (!lastSegment.equalsIgnoreCase("books")) {
+				
 				int id = Integer.parseInt(lastSegment);
 
 				Headers r = httpExchange.getResponseHeaders();
@@ -129,7 +130,7 @@ public class BookController {
 					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
 					httpExchange.getResponseHeaders().add("Content-type", "application/json");
-				
+/*				
 					BookDto response = null;
 					try {
 						response = JavaServerApp.getDataHandler().lookupBookById(id);
@@ -137,7 +138,8 @@ public class BookController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+*/
+					BookDto response = bookService.findOne(id);
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 					String json = null;
 					try {

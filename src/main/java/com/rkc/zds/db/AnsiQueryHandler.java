@@ -928,9 +928,10 @@ public class AnsiQueryHandler implements QueryHandler {
 	 */
 	private BookDto initBook(ResultSet rs) throws SQLException {
 		BookDto book = new BookDto();
-		book.setTitle(rs.getString("title"));
-		book.setAuthor("author");
-		book.setCategory(rs.getInt("category"));
+		book.setId(rs.getString("id"));
+		book.setTitle(rs.getString("Title"));
+		book.setAuthor(rs.getString("Author"));
+		book.setCategory(rs.getInt("Category"));
 		return book;
 	}
 

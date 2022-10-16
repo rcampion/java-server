@@ -64,4 +64,16 @@ public class BookServiceImpl implements BookService {
 		return page;
 	}
 
+	@Override
+	public BookDto findOne(int bookId) {
+		BookDto response = null;
+		try {
+			response = JavaServerApp.getDataHandler().lookupBookById(bookId);
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
+	}
+
 }

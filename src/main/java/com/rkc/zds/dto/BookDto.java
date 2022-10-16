@@ -12,10 +12,11 @@ public class BookDto implements Comparable<BookDto> {
 	public BookDto() {
 	}
 	
-	public BookDto(String id, String title, String author) {
+	public BookDto(String id, String title, String author, int category) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
+		this.category = category;
 	}
 	
 	public String getId() {
