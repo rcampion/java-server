@@ -22,4 +22,5 @@ public class PaginationPage <T> {
 	public int itemsPerPage;
     // sort?: Array<PaginationPropertySort>;
 	public Sort sort;
+	public int totalElements;
 }

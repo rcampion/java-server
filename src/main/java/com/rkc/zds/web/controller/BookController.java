@@ -20,6 +20,7 @@ import com.rkc.zds.service.BookService;
 import com.rkc.zds.service.impl.BookServiceImpl;
 import com.rkc.zds.service.impl.PaginationPage;
 import com.rkc.zds.utils.Pagination;
+import com.rkc.zds.utils.SystemUtils;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -28,7 +29,7 @@ public class BookController {
 
 	private static BookController instance = null;
 	private BookService bookService;
-	
+
 	private String strResponse = "";
 	private boolean testOK = true; // Set to true if want to test positive response.
 
@@ -95,8 +96,6 @@ public class BookController {
 
 	public class GetHandler implements HttpHandler {
 
-		private Pagination pagination = new Pagination(6, 0);
-		
 		@Override
 		public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -176,22 +175,28 @@ public class BookController {
 
 					httpExchange.getResponseHeaders().add("Content-type", "application/json");
 				
-					/*
-					List<BookDto> response = null;
-					try {
-						response = JavaServerApp.getDataHandler().getBooks(pagination, true);
-					} catch (DataAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}				
-					*/
+					Map<String, String> params = SystemUtils.queryToMap(httpExchange.getRequestURI().getQuery());
+					
+					System.out.println(params);
+					
+					String searchParam = params.get("search");
+					String sizeParam = params.get("size");					
+					String sortParam = params.get("sort");					
+					String pageParam = params.get("page");
+					
+					int page = Integer.parseInt(pageParam);
+					int itemsPerPage = Integer.parseInt(sizeParam);
+					
+					int offset = (page) * itemsPerPage;
+					
+					Pagination pagination = new Pagination(itemsPerPage, offset);
 
-					PaginationPage<BookDto> page = bookService.findBooks(pagination);
+					PaginationPage<BookDto> paginationPage = bookService.findBooks(pagination);
 					
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 					String json = null;
 					try {
-						json = ow.writeValueAsString(page);
+						json = ow.writeValueAsString(paginationPage);
 					} catch (JsonProcessingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
