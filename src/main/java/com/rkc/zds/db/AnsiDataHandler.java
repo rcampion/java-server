@@ -35,7 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.rkc.zds.exceptions.DataAccessException;
 
 import com.rkc.zds.Environment;
-import com.rkc.zds.dto.Book;
+import com.rkc.zds.dto.BookDto;
 import com.rkc.zds.exceptions.AppException;
 import com.rkc.zds.exceptions.AppMessage;
 import com.rkc.zds.utils.AppLogger;
@@ -83,7 +83,7 @@ public class AnsiDataHandler {
 		this.queryHandler = this.queryHandlerInstance();
 	}
 	
-	public String getBooks(Pagination pagination, boolean descending) throws DataAccessException {
+	public List<BookDto> getBooks(Pagination pagination, boolean descending) throws DataAccessException {
 		try {
 			return this.queryHandler().getBooks(pagination, true);
 		} catch (SQLException e) {
@@ -94,7 +94,7 @@ public class AnsiDataHandler {
 	/**
 	 *
 	 */
-	private void addBook(Book book) throws DataAccessException, AppException {
+	private void addBook(BookDto book) throws DataAccessException, AppException {
 		try {
 			this.dataValidator.validateBook(book);
 			this.queryHandler().createBook(book);
@@ -109,10 +109,10 @@ public class AnsiDataHandler {
 	 * @param book The Book record to be deleted.
 	 * @throws DataAccessException Thrown if any error occurs during method execution.
 	 */
-	//public Book lookupBookById(int bookId) throws DataAccessException {
-	public String lookupBookById(int bookId) throws DataAccessException {
+	public BookDto lookupBookById(int bookId) throws DataAccessException {
+	//public String lookupBookById(int bookId) throws DataAccessException {
 
-		String result = null;
+		BookDto result = null;
 		try {
 			result = this.queryHandler().readBookById(bookId);
 		} catch (SQLException e) {
@@ -127,7 +127,7 @@ public class AnsiDataHandler {
 	 * Update an book record from the Book table.
 	 * @param book The Book record to be deleted
 	 */
-	private void updateBook(Book book) throws DataAccessException, AppException {
+	private void updateBook(BookDto book) throws DataAccessException, AppException {
 		this.dataValidator.validateBook(book);
 		try {
 			this.queryHandler().updateBook(book);
@@ -142,7 +142,7 @@ public class AnsiDataHandler {
 	 * @param book The Book record to be deleted.
 	 * @throws DataAccessException Thrown if any error occurs during method execution.
 	 */
-	public void deleteBook(Book book) throws DataAccessException {
+	public void deleteBook(BookDto book) throws DataAccessException {
 		Connection conn = null;
 		try {
 			conn = DatabaseConnection.getConnection();

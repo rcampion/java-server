@@ -19,7 +19,7 @@ package com.rkc.zds.db;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
-import com.rkc.zds.dto.Book;
+import com.rkc.zds.dto.BookDto;
 import com.rkc.zds.exceptions.AppException;
 import com.rkc.zds.exceptions.AppMessage;
 
@@ -57,7 +57,7 @@ public class AnsiDataValidator {
 	}
 	*/
 	
-	public void validateBook(Book book) {
+	public void validateBook(BookDto book) {
 		// TODO Auto-generated method stub
 		
 	}

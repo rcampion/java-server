@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.rkc.zds.dto.Book;
+import com.rkc.zds.dto.BookDto;
 /*
 import com.rkc.zds.web.spring.wiki.model.Category;
 import com.rkc.zds.web.spring.wiki.model.GroupMap;
@@ -135,8 +135,8 @@ public interface QueryHandler {
 	 * @return A list of all books
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
-	//List<Book> getBooks(Pagination pagination, boolean b) throws SQLException;
-	String getBooks(Pagination pagination, boolean b) throws SQLException;
+	List<BookDto> getBooks(Pagination pagination, boolean b) throws SQLException;
+	//String getBooks(Pagination pagination, boolean b) throws SQLException;
 
 	/**
 	 * Create a book record in the database.
@@ -146,7 +146,7 @@ public interface QueryHandler {
 	 *  from this method.
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
-	void createBook(Book book) throws SQLException;
+	void createBook(BookDto book) throws SQLException;
 
 	/**
 	 * Read a book record in the database.
@@ -158,8 +158,8 @@ public interface QueryHandler {
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
 	//
-	//Book readBookById(int bookId) throws SQLException;
-	String readBookById(int bookId) throws SQLException;
+	BookDto readBookById(int bookId) throws SQLException;
+	//String readBookById(int bookId) throws SQLException;
 	
 	/**
 	 * Update a book record in the database.
@@ -169,7 +169,7 @@ public interface QueryHandler {
 	 *  from this method.
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
-	void updateBook(Book book) throws SQLException;
+	void updateBook(BookDto book) throws SQLException;
 
 	/**
 	 * Delete a book record in the database.
@@ -179,7 +179,7 @@ public interface QueryHandler {
 	 *  from this method.
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
-	void deleteBook(Book book) throws SQLException;
+	void deleteBook(BookDto book) throws SQLException;
 
 
 }

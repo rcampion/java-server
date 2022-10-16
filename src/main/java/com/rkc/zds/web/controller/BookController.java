@@ -10,8 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.rkc.zds.JavaServerApp;
-import com.rkc.zds.dto.Book;
+import com.rkc.zds.dto.BookDto;
 import com.rkc.zds.exceptions.DataAccessException;
 import com.rkc.zds.utils.Pagination;
 import com.sun.net.httpserver.Headers;
@@ -119,20 +122,29 @@ public class BookController {
 				} else {
 
 					Headers headers = httpExchange.getResponseHeaders();
-					
+								
 					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
 					httpExchange.getResponseHeaders().add("Content-type", "application/json");
 				
-					String response = null;
+					BookDto response = null;
 					try {
 						response = JavaServerApp.getDataHandler().lookupBookById(id);
 					} catch (DataAccessException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
-					JavaServerApp.writeResponse(httpExchange, response.toString());
+					
+					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+					String json = null;
+					try {
+						json = ow.writeValueAsString(response);
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					JavaServerApp.writeResponse(httpExchange, json.toString());
 											
 				}				
 
@@ -160,15 +172,24 @@ public class BookController {
 
 					httpExchange.getResponseHeaders().add("Content-type", "application/json");
 				
-					String response = null;
+					List<BookDto> response = null;
 					try {
-						response = JavaServerApp.getDataHandler().getBooks(this.pagination, true);
+						response = JavaServerApp.getDataHandler().getBooks(pagination, true);
 					} catch (DataAccessException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
-					JavaServerApp.writeResponse(httpExchange, response.toString());
+					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+					String json = null;
+					try {
+						json = ow.writeValueAsString(response);
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					JavaServerApp.writeResponse(httpExchange, json.toString());
 								
 				}
 

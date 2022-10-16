@@ -2,17 +2,17 @@ package com.rkc.zds.dto;
 
 import com.rkc.zds.enums.BookCategoryEnum;
 
-public class Book implements Comparable<Book> {
+public class BookDto implements Comparable<BookDto> {
 
 	private String id;
 	private String title;
 	private String author;
 	private int category;
 	
-	public Book() {
+	public BookDto() {
 	}
 	
-	public Book(String id, String title, String author) {
+	public BookDto(String id, String title, String author) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
@@ -57,7 +57,7 @@ public class Book implements Comparable<Book> {
 	}
 
 	@Override
-	public int compareTo(Book other) {
+	public int compareTo(BookDto other) {
 		if(!this.title.equals(other.title))
 			return this.title.compareTo(other.title);
 		return 0;

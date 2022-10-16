@@ -62,7 +62,7 @@ import com.rkc.zds.web.spring.wiki.model.WikiUserDetails;
 
 import com.rkc.zds.utils.Pagination;
 import com.rkc.zds.db.DatabaseConnection;
-import com.rkc.zds.dto.Book;
+import com.rkc.zds.dto.BookDto;
 import com.rkc.zds.enums.BookCategoryEnum;
 import com.rkc.zds.utils.AppLogger;
 import com.rkc.zds.Environment;
@@ -883,9 +883,11 @@ public class AnsiQueryHandler implements QueryHandler {
 	}
 
 	@Override
-//	public List<Book> getBooks(Pagination pagination, boolean b) throws SQLException {
-	public String getBooks(Pagination pagination, boolean b) throws SQLException {
-
+	public List<BookDto> getBooks(Pagination pagination, boolean b) throws SQLException {
+//	public String getBooks(Pagination pagination, boolean b) throws SQLException {
+		
+		List<BookDto> bookList = new ArrayList<BookDto>();
+		
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -893,28 +895,22 @@ public class AnsiQueryHandler implements QueryHandler {
 			conn = DatabaseConnection.getConnection();
 			stmt = this.getBooksStatement(conn, pagination);
 			rs = stmt.executeQuery();
-			List<Book> results = new ArrayList<Book>();
+
 			while (rs.next()) {
-				Book book = new Book();
+				BookDto book = new BookDto();
 				book.setId(rs.getString("id"));
 				book.setTitle(rs.getString("title"));
 				book.setAuthor(rs.getString("author"));
 //				BookCategoryEnum e = new BookCategoryEnum();
 				book.setCategory(rs.getInt("category"));
-				results.add(book);
+				bookList.add(book);
 			}
-			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-			String json = null;
-			try {
-				json = ow.writeValueAsString(results);
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return json;
+
 		} finally {
 			DatabaseConnection.closeConnection(conn, stmt, rs);
 		}
+		
+		return bookList;
 	}
 
 	/**
@@ -930,8 +926,8 @@ public class AnsiQueryHandler implements QueryHandler {
 	/**
 	 *
 	 */
-	private Book initBook(ResultSet rs) throws SQLException {
-		Book book = new Book();
+	private BookDto initBook(ResultSet rs) throws SQLException {
+		BookDto book = new BookDto();
 		book.setTitle(rs.getString("title"));
 		book.setAuthor("author");
 		book.setCategory(rs.getInt("category"));
@@ -939,7 +935,7 @@ public class AnsiQueryHandler implements QueryHandler {
 	}
 
 	@Override
-	public void createBook(Book book) throws SQLException {
+	public void createBook(BookDto book) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			Connection conn = DatabaseConnection.getConnection();
@@ -957,7 +953,7 @@ public class AnsiQueryHandler implements QueryHandler {
 	}
 
 	@Override
-	public String readBookById(int bookId) throws SQLException {
+	public BookDto readBookById(int bookId) throws SQLException {
 
 		Connection conn = DatabaseConnection.getConnection();
 
@@ -974,17 +970,11 @@ public class AnsiQueryHandler implements QueryHandler {
 			// return (rs.next()) ? this.initBook(rs) : null;
 
 			rs.next();
-			Book temp = this.initBook(rs);
-			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-			String json = null;
-			try {
-				json = ow.writeValueAsString(temp);
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return json;
-
+			
+			BookDto book = this.initBook(rs);
+			
+			return book;
+			
 		} finally {
 			if (closeConnection) {
 				DatabaseConnection.closeConnection(conn, stmt, rs);
@@ -998,13 +988,13 @@ public class AnsiQueryHandler implements QueryHandler {
 	}
 
 	@Override
-	public void updateBook(Book book) throws SQLException {
+	public void updateBook(BookDto book) throws SQLException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void deleteBook(Book book) throws SQLException {
+	public void deleteBook(BookDto book) throws SQLException {
 		// TODO Auto-generated method stub
 
 	}
