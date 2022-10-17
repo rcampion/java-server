@@ -23,8 +23,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.rkc.zds.db.AnsiDataHandler;
-
 /**
  * Utility class useful for paginating through a result set.
  */

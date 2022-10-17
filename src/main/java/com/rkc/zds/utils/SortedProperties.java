@@ -24,8 +24,6 @@ import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.rkc.zds.db.MySqlQueryHandler;
-
 /**
  * This class acts as a utility class for providing the capability of a property file
  * that is sorted alphabetically by key value.  It is useful for things like translation

@@ -1,7 +1,5 @@
 package com.rkc.zds.dto;
 
-import com.rkc.zds.enums.BookCategoryEnum;
-
 public class BookDto implements Comparable<BookDto> {
 
 	private String id;

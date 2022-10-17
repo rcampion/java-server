@@ -18,12 +18,12 @@ package com.rkc.zds.db;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.commons.lang3.StringUtils;
 
-import com.rkc.zds.utils.Encryption;
+import org.apache.commons.dbcp.BasicDataSource;
+
 //import com.rkc.zds.web.spring.wiki.utils.ResourceUtil;
 import com.rkc.zds.Environment;
+import com.rkc.zds.utils.Encryption;
 
 /**
  * Extension of the Commons DBCP BasicDataSource class that

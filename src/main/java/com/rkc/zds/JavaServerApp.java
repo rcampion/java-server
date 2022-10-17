@@ -19,7 +19,8 @@ import com.sun.net.httpserver.HttpServer;
  * @author rcampion
  */
 public class JavaServerApp {
-
+	
+	/** Logger */
 	private static final Logger logger = LoggerFactory.getLogger(JavaServerApp.class);
 
 	private static JavaServerApp instance = null;

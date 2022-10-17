@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.rkc.zds.JavaServerApp;
 import com.rkc.zds.dto.BookDto;
-import com.rkc.zds.exceptions.AppException;
 import com.rkc.zds.exceptions.DataAccessException;
 import com.rkc.zds.service.BookService;
 import com.rkc.zds.utils.Pagination;

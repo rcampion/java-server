@@ -1,6 +1,6 @@
 package com.rkc.zds.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.rkc.zds.JavaServerApp;
 import com.rkc.zds.db.AnsiDataHandler;
 import com.rkc.zds.dto.BookDto;
 import com.rkc.zds.exceptions.DataAccessException;
