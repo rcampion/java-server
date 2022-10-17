@@ -94,7 +94,7 @@ public class BookController {
 
 	}
 
-	public class GetHandler implements HttpHandler {
+	public class BookHandler implements HttpHandler {
 
 		@Override
 		public void handle(HttpExchange httpExchange) throws IOException {
@@ -105,40 +105,37 @@ public class BookController {
 			// URI uri = new URI("http://example.com/foo/bar/42?param=true");
 			String[] segments = uri.getPath().split("/");
 			String lastSegment = segments[segments.length - 1];
-			if (!lastSegment.equalsIgnoreCase("books")) {
-				
-				int id = Integer.parseInt(lastSegment);
 
-				Headers r = httpExchange.getResponseHeaders();
-				r.clear();
+			if (httpExchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
 
-				if (httpExchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
+				httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers",
+						"Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin, apiKey");
 
-					httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers",
-							"Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin, apiKey");
+				httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:4200");
 
-					httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:4200");
+				httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
-					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
+				httpExchange.sendResponseHeaders(204, -1);
 
-					httpExchange.sendResponseHeaders(204, -1);
-					return;
-				} else {
+				return;
+
+			}
+
+			if (httpExchange.getRequestMethod().equalsIgnoreCase("GET")) {
+
+				if (!lastSegment.equalsIgnoreCase("books")) {
+
+					int id = Integer.parseInt(lastSegment);
+
+					Headers r = httpExchange.getResponseHeaders();
+					r.clear();
 
 					Headers headers = httpExchange.getResponseHeaders();
-								
+
 					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
 					httpExchange.getResponseHeaders().add("Content-type", "application/json");
-/*				
-					BookDto response = null;
-					try {
-						response = JavaServerApp.getDataHandler().lookupBookById(id);
-					} catch (DataAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-*/
+
 					BookDto response = bookService.findOne(id);
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 					String json = null;
@@ -148,53 +145,38 @@ public class BookController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 					JavaServerApp.writeResponse(httpExchange, json.toString());
-											
-				}				
 
-			} else {
-
-				Headers r = httpExchange.getResponseHeaders();
-				r.clear();
-
-				if (httpExchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
-
-					httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers",
-							"Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin, apiKey");
-
-					httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:4200");
-
-					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
-
-					httpExchange.sendResponseHeaders(204, -1);
-					return;
 				} else {
 
+					Headers r = httpExchange.getResponseHeaders();
+					r.clear();
+
 					Headers headers = httpExchange.getResponseHeaders();
-					
+
 					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
 					httpExchange.getResponseHeaders().add("Content-type", "application/json");
-				
+
 					Map<String, String> params = SystemUtils.queryToMap(httpExchange.getRequestURI().getQuery());
-					
+
 					System.out.println(params);
-					
+
 					String searchParam = params.get("search");
-					String sizeParam = params.get("size");					
-					String sortParam = params.get("sort");					
+					String sizeParam = params.get("size");
+					String sortParam = params.get("sort");
 					String pageParam = params.get("page");
-					
+
 					int page = Integer.parseInt(pageParam);
 					int itemsPerPage = Integer.parseInt(sizeParam);
-					
+
 					int offset = (page) * itemsPerPage;
-					
+
 					Pagination pagination = new Pagination(itemsPerPage, offset);
 
 					PaginationPage<BookDto> paginationPage = bookService.findBooks(pagination);
-					
+
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 					String json = null;
 					try {
@@ -203,14 +185,13 @@ public class BookController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 					JavaServerApp.writeResponse(httpExchange, json.toString());
-								
+
 				}
 
 			}
 		}
-
 	}
 
 	public class GetHandlerOne implements HttpHandler {

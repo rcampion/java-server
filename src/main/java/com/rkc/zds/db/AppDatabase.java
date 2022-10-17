@@ -52,34 +52,6 @@ public class AppDatabase {
 	private static final AppLogger logger = AppLogger.getLogger(AppDatabase.class.getName());
 	/** Root directory within the WAR distribution that contains the default topic pages. */
 	public static final String SPECIAL_PAGE_DIR = "pages";
-	// array used in database migration - elements are table name and, if elements within the
-	// table have dependencies (such as app_namespace dependending on main_namespace_id), the
-	// column to sort results in order to avoid foreign key constrain violations
-	private static final String[][] APPLICATION_DB_TABLE_INFO = {
-		{"app_virtual_wiki", "virtual_wiki_id"},
-		{"app_users", null},
-		{"app_wiki_user", "wiki_user_id"},
-		{"app_namespace", "namespace_id"},
-		{"app_namespace_translation", "namespace_id"},
-		{"app_topic", "topic_id"},
-		{"app_topic_version", "topic_version_id"},
-		{"app_file", "file_id"},
-		{"app_file_version", "file_version_id"},
-		{"app_category", null},
-		{"app_group", "group_id"},
-		{"app_group_members", "id"},
-		{"app_role", null},
-		{"app_authorities", null},
-		{"app_group_authorities", null},
-		{"app_recent_change", null},
-		{"app_log", null},
-		{"app_watchlist", null},
-		{"app_topic_links", null},
-		{"app_interwiki", null},
-		{"app_configuration", null},
-		{"app_user_block", "user_block_id"},
-		{"app_file_data", "file_version_id"}
-	};
 
 	/**
 	 *

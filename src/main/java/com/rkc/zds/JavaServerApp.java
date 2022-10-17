@@ -64,14 +64,14 @@ public class JavaServerApp {
 
 			server.setExecutor(Executors.newFixedThreadPool(10));
 
-			server.createContext("/auth-server/api/info/", bookController.new InfoHandler());
+			//server.createContext("/auth-server/api/info/", bookController.new InfoHandler());
 
 			//server.createContext("/auth-server/api/books/{id}/", bookController.new GetHandlerOne());
 			
-			server.createContext("/auth-server/api/books", bookController.new GetHandler());
+			server.createContext("/auth-server/api/books", bookController.new BookHandler());
 
-			server.createContext("/auth-server/api/test/", bookController.new PostHandler());
-
+			//server.createContext("/auth-server/api/test/", bookController.new PostHandler());
+/*
 			server.createContext("/auth-server/api/greeting/", (exchange -> {
 
 				if ("GET".equals(exchange.getRequestMethod())) {
@@ -85,7 +85,7 @@ public class JavaServerApp {
 				}
 				exchange.close();
 			}));
-
+*/
 			server.start();
 
 			System.out.println("The server is running");

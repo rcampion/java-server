@@ -20,52 +20,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.sql.Types;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.Properties;
 
-// import org.apache.commons.lang.ObjectUtils.Null;
-import org.apache.commons.lang3.StringUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
-/*
-import com.rkc.zds.web.spring.wiki.model.Category;
-import com.rkc.zds.web.spring.wiki.model.GroupMap;
-import com.rkc.zds.web.spring.wiki.model.ImageData;
-import com.rkc.zds.web.spring.wiki.model.Interwiki;
-import com.rkc.zds.web.spring.wiki.model.LogItem;
-import com.rkc.zds.web.spring.wiki.model.Namespace;
-import com.rkc.zds.web.spring.wiki.model.RecentChange;
-import com.rkc.zds.web.spring.wiki.model.Role;
-import com.rkc.zds.web.spring.wiki.model.RoleMap;
-import com.rkc.zds.web.spring.wiki.model.Topic;
-import com.rkc.zds.web.spring.wiki.model.TopicType;
-import com.rkc.zds.web.spring.wiki.model.TopicVersion;
-import com.rkc.zds.web.spring.wiki.model.UserBlock;
-import com.rkc.zds.web.spring.wiki.model.VirtualWiki;
-import com.rkc.zds.web.spring.wiki.model.WikiFile;
-import com.rkc.zds.web.spring.wiki.model.WikiFileVersion;
-import com.rkc.zds.web.spring.wiki.model.WikiGroup;
-import com.rkc.zds.web.spring.wiki.model.WikiUser;
-import com.rkc.zds.web.spring.wiki.model.WikiUserDetails;
-*/
-
-import com.rkc.zds.utils.Pagination;
-import com.rkc.zds.db.DatabaseConnection;
-import com.rkc.zds.dto.BookDto;
-import com.rkc.zds.enums.BookCategoryEnum;
-import com.rkc.zds.utils.AppLogger;
 import com.rkc.zds.Environment;
+import com.rkc.zds.dto.BookDto;
+import com.rkc.zds.utils.AppLogger;
+import com.rkc.zds.utils.Pagination;
 
 /**
  * Default implementation of the QueryHandler implementation for retrieving,
@@ -110,7 +73,7 @@ public class AnsiQueryHandler implements QueryHandler {
 
 	protected static String STATEMENT_SELECT_USERS_AUTHENTICATION = null;
 
-	protected static String STATEMENT_UPDATE_GROUP = null;
+	protected static String STATEMENT_UPDATE_BOOK = null;
 
 	private Properties props = null;
 
@@ -185,23 +148,38 @@ public class AnsiQueryHandler implements QueryHandler {
 	protected void init(Properties properties) {
 		this.props = properties;
 
-		STATEMENT_SELECT_BOOKS = props.getProperty("STATEMENT_SELECT_BOOKS");
-		STATEMENT_SELECT_BOOK_BY_ID = props.getProperty("STATEMENT_SELECT_BOOK_BY_ID");
 
 		STATEMENT_CONNECTION_VALIDATION_QUERY = props.getProperty("STATEMENT_CONNECTION_VALIDATION_QUERY");
+
 		STATEMENT_CREATE_AUTHORITIES_TABLE = props.getProperty("STATEMENT_CREATE_AUTHORITIES_TABLE");
 		STATEMENT_CREATE_CATEGORY_TABLE = props.getProperty("STATEMENT_CREATE_CATEGORY_TABLE");
 		STATEMENT_CREATE_CATEGORY_INDEX = props.getProperty("STATEMENT_CREATE_CATEGORY_INDEX");
 		STATEMENT_DELETE_AUTHORITIES = props.getProperty("STATEMENT_DELETE_AUTHORITIES");
+
+		STATEMENT_DELETE_AUTHORITIES = props.getProperty("STATEMENT_DELETE_AUTHORITIES");
+		
+		
 		STATEMENT_DROP_AUTHORITIES_TABLE = props.getProperty("STATEMENT_DROP_AUTHORITIES_TABLE");
 		STATEMENT_DROP_CATEGORY_TABLE = props.getProperty("STATEMENT_DROP_CATEGORY_TABLE");
 		STATEMENT_INSERT_AUTHORITY = props.getProperty("STATEMENT_INSERT_AUTHORITY");
+		
+		STATEMENT_INSERT_BOOK = props.getProperty("STATEMENT_INSERT_BOOK");
+		
 		STATEMENT_INSERT_CATEGORY = props.getProperty("STATEMENT_INSERT_CATEGORY");
 		STATEMENT_SELECT_AUTHORITIES_AUTHORITY = props.getProperty("STATEMENT_SELECT_AUTHORITIES_AUTHORITY");
 		STATEMENT_SELECT_AUTHORITIES_AUTHORITY_ALL = props.getProperty("STATEMENT_SELECT_AUTHORITIES_AUTHORITY_ALL");
 		STATEMENT_SELECT_AUTHORITIES_LOGIN = props.getProperty("STATEMENT_SELECT_AUTHORITIES_LOGIN");
 		STATEMENT_SELECT_AUTHORITIES_USER = props.getProperty("STATEMENT_SELECT_AUTHORITIES_USER");
+		
+		STATEMENT_SELECT_BOOKS = props.getProperty("STATEMENT_SELECT_BOOKS");
+		STATEMENT_SELECT_BOOK_BY_ID = props.getProperty("STATEMENT_SELECT_BOOK_BY_ID");
+		
 		STATEMENT_SELECT_CATEGORIES = props.getProperty("STATEMENT_SELECT_CATEGORIES");
+
+		STATEMENT_UPDATE_BOOK = props.getProperty("STATEMENT_UPDATE_BOOK");
+		
+		
+		
 	}
 
 	@Override
@@ -330,10 +308,39 @@ public class AnsiQueryHandler implements QueryHandler {
 
 	@Override
 	public void updateBook(BookDto book) throws SQLException {
-		// TODO Auto-generated method stub
+		PreparedStatement stmt = null;
+
+		try {
+			Connection conn = DatabaseConnection.getConnection();
+			stmt = conn.prepareStatement(STATEMENT_UPDATE_BOOK);
+			stmt.setString(1, book.getTitle());
+			stmt.setString(2, book.getAuthor());
+			stmt.setInt(3, book.getCategory());
+			stmt.setString(4, book.getId());
+			stmt.executeUpdate();
+		} finally {
+			DatabaseConnection.closeStatement(stmt);
+		}
 
 	}
-
+	
+	/**
+	 *
+	 */
+	public void updateBook(BookDto book, Connection conn) throws SQLException {
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(STATEMENT_UPDATE_BOOK);
+			stmt.setString(1, book.getTitle());
+			stmt.setString(2, book.getAuthor());
+			stmt.setInt(3, book.getCategory());
+			stmt.setString(4, book.getId());
+			stmt.executeUpdate();
+		} finally {
+			DatabaseConnection.closeStatement(stmt);
+		}
+	}
+	
 	@Override
 	public void deleteBook(BookDto book) throws SQLException {
 		// TODO Auto-generated method stub
