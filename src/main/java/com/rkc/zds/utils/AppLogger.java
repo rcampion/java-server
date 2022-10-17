@@ -28,7 +28,7 @@ public class AppLogger {
 	private final Logger logger;
 
 	/** Logging framework configuration file path. */
-	public final static String LOGGING_CONFIGURATION_FILE_PATH = "/WEB-INF/classes/logback.xml";
+	public final static String LOGGING_CONFIGURATION_FILE_PATH = "./logback.xml";
 
 	/**
 	 *

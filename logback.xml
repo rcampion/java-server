@@ -3,7 +3,7 @@
 	<contextName>application</contextName>
 
 	<!-- Define a directory where all of your logging goes, e.g. ${catalina.base}/logs -->
-	<property name="LOG_DIR" value="/var/log/java-server"/>
+	<property name="LOG_DIR" value="./logs"/>
 
 	<!-- Three preconfigured appenders are available, by default only 'stdout' is activate and configured -->
 

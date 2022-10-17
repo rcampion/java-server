@@ -29,7 +29,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import com.rkc.zds.db.QueryHandler;
 import com.rkc.zds.exceptions.AppException;
-//import com.rkc.zds.web.spring.wiki.utils.ResourceUtil;
 import com.rkc.zds.utils.SortedProperties;
 import com.rkc.zds.utils.AppLogger;
 

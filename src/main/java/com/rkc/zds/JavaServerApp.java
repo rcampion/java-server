@@ -30,7 +30,7 @@ import com.rkc.zds.web.controller.BookController;
  */
 public class JavaServerApp {
 
-	private static final Logger logger = LoggerFactory.getLogger(JavaServerApp.class);
+	//private static final Logger logger = LoggerFactory.getLogger(JavaServerApp.class);
 
 	private static JavaServerApp instance = null;
 
@@ -83,7 +83,7 @@ public class JavaServerApp {
 			System.out.println("The server is running");
 
 		} catch (Exception e) {
-			logger.error("Failure while initializing JavaServerApp", e);
+			//logger.error("Failure while initializing JavaServerApp", e);
 		}
 	}
 
