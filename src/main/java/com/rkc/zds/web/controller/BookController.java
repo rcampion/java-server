@@ -26,10 +26,8 @@ import com.sun.net.httpserver.HttpHandler;
 public class BookController {
 
 	private static BookController instance = null;
+	
 	private BookService bookService;
-
-	private String strResponse = "";
-	private boolean testOK = true; // Set to true if want to test positive response.
 
 	private BookController() {
 		this.bookService = new BookServiceImpl();
