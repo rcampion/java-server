@@ -46,54 +46,6 @@ public class BookController {
 		return instance;
 	}
 
-	/**
-	 * 
-	 * @param httpExchange There are any number of ways to create an error in the
-	 *                     response. This method sends back a 404 and also
-	 *                     mismatched the content length and the content, to create
-	 *                     an unexpected EOF error.
-	 * 
-	 */
-	private void replyError(HttpExchange httpExchange) {
-		String replyString = "Error";
-		try {
-			Headers responseHeaders = httpExchange.getResponseHeaders();
-			responseHeaders.add("Content-Type", ("application/json"));
-			httpExchange.sendResponseHeaders(404, 0);
-
-			try (OutputStream os = httpExchange.getResponseBody()) {
-				os.write(replyString.getBytes());
-			}
-
-		} catch (IOException e1) {
-			System.out.println(e1.getMessage());
-		}
-	}
-
-	private static void sendAndGetResponse(HttpExchange httpExchange, byte[] response) throws IOException {
-		if (response.length > 0) {
-			httpExchange.getResponseHeaders().add("Content-type", "application/json");
-			httpExchange.getResponseHeaders().add("Content-length", Integer.toString(response.length));
-			httpExchange.sendResponseHeaders(200, response.length);
-			httpExchange.getResponseBody().write(response);
-			httpExchange.close();
-		}
-	}
-
-//--------------
-
-	public class InfoHandler implements HttpHandler {
-
-		public void handle(HttpExchange httpExchange) throws IOException {
-
-			String response = "Use /get?hello=word&foo=bar to see how to handle url parameters";
-
-			JavaServerApp.writeResponse(httpExchange, response.toString());
-
-		}
-
-	}
-
 	public class BookHandler implements HttpHandler {
 
 		@Override
@@ -120,21 +72,21 @@ public class BookController {
 				return;
 
 			}
+			
+			Headers r = httpExchange.getResponseHeaders();
+			r.clear();
+
+			Headers headers = httpExchange.getResponseHeaders();
+
+			httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
+
+			httpExchange.getResponseHeaders().add("Content-type", "application/json");
 
 			if (httpExchange.getRequestMethod().equalsIgnoreCase("GET")) {
 
 				if (!lastSegment.equalsIgnoreCase("books")) {
 
 					int id = Integer.parseInt(lastSegment);
-
-					Headers r = httpExchange.getResponseHeaders();
-					r.clear();
-
-					Headers headers = httpExchange.getResponseHeaders();
-
-					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
-
-					httpExchange.getResponseHeaders().add("Content-type", "application/json");
 
 					BookDto response = bookService.findOne(id);
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -149,15 +101,6 @@ public class BookController {
 					JavaServerApp.writeResponse(httpExchange, json.toString());
 
 				} else {
-
-					Headers r = httpExchange.getResponseHeaders();
-					r.clear();
-
-					Headers headers = httpExchange.getResponseHeaders();
-
-					httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
-
-					httpExchange.getResponseHeaders().add("Content-type", "application/json");
 
 					Map<String, String> params = SystemUtils.queryToMap(httpExchange.getRequestURI().getQuery());
 
@@ -190,16 +133,9 @@ public class BookController {
 
 				}
 
+			} else if (httpExchange.getRequestMethod().equalsIgnoreCase("PUT")) {
+				
 			}
-		}
-	}
-
-	public class GetHandlerOne implements HttpHandler {
-		public void handle(HttpExchange httpExchange) throws IOException {
-
-			byte[] response = getResponse().getBytes();
-			sendAndGetResponse(httpExchange, response);
-
 		}
 	}
 
@@ -248,35 +184,5 @@ public class BookController {
 		}
 	}
 
-	/**
-	 * 
-	 * @param httpExchange
-	 * 
-	 *                     Sends a 200 OK back
-	 */
-	private void replyOK(HttpExchange httpExchange) {
-
-		try {
-			Headers responseHeaders = httpExchange.getResponseHeaders();
-			responseHeaders.add("Content-Type", ("application/json"));
-			strResponse = getResponse();
-			if (strResponse != null) {
-				httpExchange.sendResponseHeaders(200, strResponse.length());
-
-				try (OutputStream os = httpExchange.getResponseBody()) {
-					os.write(strResponse.getBytes());
-				}
-			} else {
-				httpExchange.sendResponseHeaders(200, -1);
-			}
-
-		} catch (IOException e1) {
-			System.out.println(e1.getMessage());
-		}
-	}
-
-	static String getResponse() {
-		return "HttpServer Works!\n";
-	}
 
 }
