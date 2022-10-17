@@ -9,5 +9,9 @@ public interface BookService {
 	PaginationPage<BookDto> findBooks(Pagination pageable);
 	
 	BookDto findOne(int bookId);
+
+	void updateBook(BookDto book);
+
+	void saveBook(BookDto book);
 	
 }

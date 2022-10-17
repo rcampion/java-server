@@ -40,6 +40,7 @@ public class AnsiQueryHandler implements QueryHandler {
 	private static final AppLogger logger = AppLogger.getLogger(AnsiQueryHandler.class.getName());
 	protected static final String SQL_PROPERTY_FILE_NAME = "sql/sql.ansi.properties";
 
+
 	protected static String STATEMENT_CONNECTION_VALIDATION_QUERY = null;
 
 	protected static String STATEMENT_CREATE_AUTHORITIES_TABLE = null;
@@ -55,14 +56,14 @@ public class AnsiQueryHandler implements QueryHandler {
 	protected static String STATEMENT_DROP_CATEGORY_TABLE = null;
 	
 	protected static String STATEMENT_INSERT_BOOK = null;
+	//protected static String STATEMENT_INSERT_BOOK_AUTO_INCREMENT = null;
 
 	protected static String STATEMENT_INSERT_AUTHORITY = null;
 	protected static String STATEMENT_INSERT_CATEGORY = null;
 	
-	
-
 	protected static String STATEMENT_SELECT_BOOKS = null;
 	protected static String STATEMENT_SELECT_BOOK_BY_ID = null;
+	protected static String STATEMENT_SELECT_BOOK_SEQUENCE = null;
 
 	protected static String STATEMENT_SELECT_AUTHORITIES_AUTHORITY = null;
 	protected static String STATEMENT_SELECT_AUTHORITIES_AUTHORITY_ALL = null;
@@ -173,13 +174,12 @@ public class AnsiQueryHandler implements QueryHandler {
 		
 		STATEMENT_SELECT_BOOKS = props.getProperty("STATEMENT_SELECT_BOOKS");
 		STATEMENT_SELECT_BOOK_BY_ID = props.getProperty("STATEMENT_SELECT_BOOK_BY_ID");
+		STATEMENT_SELECT_BOOK_SEQUENCE = props.getProperty("STATEMENT_SELECT_BOOK_SEQUENCE");
 		
 		STATEMENT_SELECT_CATEGORIES = props.getProperty("STATEMENT_SELECT_CATEGORIES");
 
 		STATEMENT_UPDATE_BOOK = props.getProperty("STATEMENT_UPDATE_BOOK");
-		
-		
-		
+				
 	}
 
 	@Override
@@ -327,14 +327,14 @@ public class AnsiQueryHandler implements QueryHandler {
 	/**
 	 *
 	 */
-	public void updateBook(BookDto book, Connection conn) throws SQLException {
+	public void insertBook(BookDto book) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn.prepareStatement(STATEMENT_UPDATE_BOOK);
+			Connection conn = DatabaseConnection.getConnection();
+			stmt = conn.prepareStatement(STATEMENT_INSERT_BOOK);
 			stmt.setString(1, book.getTitle());
 			stmt.setString(2, book.getAuthor());
 			stmt.setInt(3, book.getCategory());
-			stmt.setString(4, book.getId());
 			stmt.executeUpdate();
 		} finally {
 			DatabaseConnection.closeStatement(stmt);
@@ -347,4 +347,17 @@ public class AnsiQueryHandler implements QueryHandler {
 
 	}
 
+	/**
+	 * Retrieve the next available Book id from the Book table.
+	 *
+	 * @param conn A database connection to use when connecting to the database
+	 *  from this method.
+	 * @return The next available Book id from the Book table.
+	 * @throws SQLException Thrown if any error occurs during method execution.
+	 */
+	private int nextBookId(Connection conn) throws SQLException {
+		int nextId = DatabaseConnection.executeSequenceQuery(STATEMENT_SELECT_BOOK_SEQUENCE, "id", conn);
+		// note - this returns the last id in the system, so add one
+		return nextId + 1;
+	}
 }

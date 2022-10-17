@@ -142,8 +142,6 @@ public interface QueryHandler {
 	 * Create a book record in the database.
 	 *
 	 * @param book The Book record that is to be created in the database.
-	 * @param conn A database connection to use when connecting to the database
-	 *  from this method.
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
 	void createBook(BookDto book) throws SQLException;
@@ -152,8 +150,6 @@ public interface QueryHandler {
 	 * Read a book record in the database.
 	 *
 	 * @param bookId The Book ID that is to be read from the database.
-	 * @param conn A database connection to use when connecting to the database
-	 *  from this method.
 	 * @return A  book
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
@@ -165,8 +161,6 @@ public interface QueryHandler {
 	 * Update a book record in the database.
 	 *
 	 * @param book The Book record that is to be updated in the database.
-	 * @param conn A database connection to use when connecting to the database
-	 *  from this method.
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
 	void updateBook(BookDto book) throws SQLException;
@@ -175,11 +169,8 @@ public interface QueryHandler {
 	 * Delete a book record in the database.
 	 *
 	 * @param book The Book record that is to be deleted in the database.
-	 * @param conn A database connection to use when connecting to the database
-	 *  from this method.
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
 	void deleteBook(BookDto book) throws SQLException;
-
 
 }

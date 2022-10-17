@@ -5,17 +5,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.rkc.zds.JavaServerApp;
+
 import com.rkc.zds.dto.BookDto;
-import com.rkc.zds.exceptions.DataAccessException;
 import com.rkc.zds.service.BookService;
 import com.rkc.zds.service.impl.BookServiceImpl;
 import com.rkc.zds.service.impl.PaginationPage;
@@ -67,12 +68,14 @@ public class BookController {
 
 				httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
+				httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS");
+
 				httpExchange.sendResponseHeaders(204, -1);
 
 				return;
 
 			}
-			
+
 			Headers r = httpExchange.getResponseHeaders();
 			r.clear();
 
@@ -88,11 +91,11 @@ public class BookController {
 
 					int id = Integer.parseInt(lastSegment);
 
-					BookDto response = bookService.findOne(id);
+					BookDto book = bookService.findOne(id);
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 					String json = null;
 					try {
-						json = ow.writeValueAsString(response);
+						json = ow.writeValueAsString(book);
 					} catch (JsonProcessingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -134,20 +137,55 @@ public class BookController {
 				}
 
 			} else if (httpExchange.getRequestMethod().equalsIgnoreCase("PUT")) {
-				
-			}
-		}
-	}
+				try {
 
-	// Handler for '/test' context
-	public class PostHandler implements HttpHandler {
+					// REQUEST Headers
+					Headers requestHeaders = httpExchange.getRequestHeaders();
+					Set<Map.Entry<String, List<String>>> entries = requestHeaders.entrySet();
 
-		@Override
-		public void handle(HttpExchange httpExchange) throws IOException {
-			System.out.println("Serving the request");
+					int contentLength = Integer.parseInt(requestHeaders.getFirst("Content-length"));
 
-			// Serve for POST requests only
-			if (httpExchange.getRequestMethod().equalsIgnoreCase("POST")) {
+					// REQUEST Body
+					InputStream is = httpExchange.getRequestBody();
+
+					byte[] data = new byte[contentLength];
+					int length = is.read(data);
+									
+					ObjectMapper mapper = new ObjectMapper();
+
+					BookDto book = new BookDto();
+					try {
+						book = mapper.readValue(data, BookDto.class);
+					} catch (JsonParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JsonMappingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					bookService.updateBook(book);
+					
+					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+					String json = null;
+					try {
+						json = ow.writeValueAsString(book);
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					JavaServerApp.writeResponse(httpExchange, json.toString());
+					
+					httpExchange.close();
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (httpExchange.getRequestMethod().equalsIgnoreCase("POST")) {
 
 				try {
 
@@ -163,16 +201,36 @@ public class BookController {
 					byte[] data = new byte[contentLength];
 					int length = is.read(data);
 
-					// RESPONSE Headers
-					Headers responseHeaders = httpExchange.getResponseHeaders();
+					ObjectMapper mapper = new ObjectMapper();
 
-					// Send RESPONSE Headers
-					httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, contentLength);
+					BookDto book = new BookDto();
+					try {
+						book = mapper.readValue(data, BookDto.class);
+					} catch (JsonParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JsonMappingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					bookService.saveBook(book);
+					
+					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+					String json = null;
+					try {
+						json = ow.writeValueAsString(book);
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
-					// RESPONSE Body
-					OutputStream os = httpExchange.getResponseBody();
-
-					os.write(data);
+					JavaServerApp.writeResponse(httpExchange, json.toString());
+					
+					httpExchange.close();
 
 					httpExchange.close();
 
@@ -180,9 +238,6 @@ public class BookController {
 					e.printStackTrace();
 				}
 			}
-
 		}
 	}
-
-
 }

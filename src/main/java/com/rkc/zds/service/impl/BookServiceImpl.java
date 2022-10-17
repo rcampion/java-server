@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.rkc.zds.JavaServerApp;
 import com.rkc.zds.dto.BookDto;
+import com.rkc.zds.exceptions.AppException;
 import com.rkc.zds.exceptions.DataAccessException;
 import com.rkc.zds.service.BookService;
 import com.rkc.zds.utils.Pagination;
@@ -32,9 +33,6 @@ public class BookServiceImpl implements BookService {
 			size = 1;
 		}
 
-		// PageRequest pageRequest = PageRequest.of(0, size);
-
-		// PageImpl<BookDto> page = new PageImpl<BookDto>(bookList, pageRequest, size);
 		PaginationPage page = new PaginationPage(bookList, size);
 		
 		int count = 0;
@@ -55,7 +53,7 @@ public class BookServiceImpl implements BookService {
 			// Retrieving the result
 			rs.next();
 			count = rs.getInt(1);
-			System.out.println("Number of records in the Book table: " + count);
+			//System.out.println("Number of records in the Book table: " + count);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,6 +72,26 @@ public class BookServiceImpl implements BookService {
 			e.printStackTrace();
 		}
 		return response;
+	}
+
+	@Override
+	public void updateBook(BookDto book) {
+		try {
+			JavaServerApp.getDataHandler().updateBook(book);
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	@Override
+	public void saveBook(BookDto book) {
+		try {
+			JavaServerApp.getDataHandler().addBook(book);
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 }
