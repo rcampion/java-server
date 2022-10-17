@@ -16,40 +16,26 @@
  */
 package com.rkc.zds.db;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TimeZone;
+
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.rkc.zds.JavaServerApp;
-import com.rkc.zds.exceptions.DataAccessException;
-//import com.rkc.zds.web.spring.wiki.Environment;
-//import com.rkc.zds.web.spring.wiki.WikiBase;
-//import com.rkc.zds.web.spring.wiki.WikiConfiguration;
-import com.rkc.zds.exceptions.AppException;
-import com.rkc.zds.exceptions.AppMessage;
-import com.rkc.zds.utils.AppLogger;
 
 /**
  * This class contains general database utility methods that are useful for a
  * variety of Application database functions, including setup and upgrades.
  */
 public class AppDatabase {
+	
+	/** Logger */
+	private static final Logger logger = LoggerFactory.getLogger(AppDatabase.class);
 
 	private static String CONNECTION_VALIDATION_QUERY = null;
-	private static final AppLogger logger = AppLogger.getLogger(AppDatabase.class.getName());
+
 	/** Root directory within the WAR distribution that contains the default topic pages. */
 	public static final String SPECIAL_PAGE_DIR = "pages";
 

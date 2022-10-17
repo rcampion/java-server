@@ -20,13 +20,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.rkc.zds.db.AnsiDataHandler;
+
 /**
  * Utility class useful for paginating through a result set.
  */
 public class Pagination {
 
 	/** Logger */
-	public static final AppLogger logger = AppLogger.getLogger(Pagination.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(Pagination.class);
 
 	private final int numResults;
 	private final int offset;

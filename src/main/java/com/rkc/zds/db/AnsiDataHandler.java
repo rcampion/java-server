@@ -16,30 +16,20 @@
  */
 package com.rkc.zds.db;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import com.rkc.zds.exceptions.DataAccessException;
-import com.rkc.zds.exceptions.AppException;
-
 import org.apache.commons.lang3.StringUtils;
-import com.rkc.zds.exceptions.DataAccessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.rkc.zds.Environment;
 import com.rkc.zds.dto.BookDto;
 import com.rkc.zds.exceptions.AppException;
-import com.rkc.zds.exceptions.AppMessage;
-import com.rkc.zds.utils.AppLogger;
+import com.rkc.zds.exceptions.DataAccessException;
 import com.rkc.zds.utils.Encryption;
 import com.rkc.zds.utils.Pagination;
 
@@ -47,48 +37,15 @@ import com.rkc.zds.utils.Pagination;
  * Default handler for ANSI SQL compatible databases.
  */
 public class AnsiDataHandler {
+	
+	/** Logger */	
+	private static final Logger logger = LoggerFactory.getLogger(AnsiDataHandler.class);
 
 	/**
 	 * Any topic lookup that takes longer than the specified time (in ms) will
 	 * trigger a log message.
 	 */
 	private static final int TIME_LIMIT_TOPIC_LOOKUP = 20;
-	/*
-	 * private static final WikiCache<String, List<Interwiki>> CACHE_INTERWIKI_LIST
-	 * = new WikiCache<String, List<Interwiki>>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_INTERWIKI_LIST");
-	 * private static final WikiCache<String, List<Namespace>> CACHE_NAMESPACE_LIST
-	 * = new WikiCache<String, List<Namespace>>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_NAMESPACE_LIST");
-	 * private static final WikiCache<String, List<RoleMap>> CACHE_ROLE_MAP_GROUP =
-	 * new WikiCache<String, List<RoleMap>>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_ROLE_MAP_GROUP");
-	 * private static final WikiCache<String, String> CACHE_TOPIC_NAMES_BY_NAME =
-	 * new WikiCache<String, String>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_TOPIC_NAMES_BY_NAME");
-	 * private static final WikiCache<Integer, Topic> CACHE_TOPICS_BY_ID = new
-	 * WikiCache<Integer,
-	 * Topic>("com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_TOPICS_BY_ID");
-	 * private static final WikiCache<String, Integer> CACHE_TOPIC_IDS_BY_NAME = new
-	 * WikiCache<String, Integer>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_TOPIC_IDS_BY_NAME");
-	 * private static final WikiCache<Integer, TopicVersion> CACHE_TOPIC_VERSIONS =
-	 * new WikiCache<Integer, TopicVersion>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_TOPIC_VERSIONS");
-	 * private static final WikiCache<String, Map<Object, UserBlock>>
-	 * CACHE_USER_BLOCKS_ACTIVE = new WikiCache<String, Map<Object, UserBlock>>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_USER_BLOCKS_ACTIVE");
-	 * private static final WikiCache<Integer, WikiUser> CACHE_USER_BY_USER_ID = new
-	 * WikiCache<Integer, WikiUser>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_USER_BY_USER_ID");
-	 * private static final WikiCache<String, WikiUser> CACHE_USER_BY_USER_NAME =
-	 * new WikiCache<String, WikiUser>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_USER_BY_USER_NAME");
-	 * private static final WikiCache<String, List<VirtualWiki>>
-	 * CACHE_VIRTUAL_WIKI_LIST = new WikiCache<String, List<VirtualWiki>>(
-	 * "com.rkc.zds.web.spring.wiki.db.AnsiDataHandler.CACHE_VIRTUAL_WIKI_LIST");
-	 */
-	private static final AppLogger logger = AppLogger.getLogger(AnsiDataHandler.class.getName());
 
 	// TODO - remove when the ability to upgrade to 1.3 is deprecated
 	private static final Map<String, String> LEGACY_DATA_HANDLER_MAP = new HashMap<String, String>();

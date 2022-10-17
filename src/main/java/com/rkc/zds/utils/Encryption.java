@@ -27,6 +27,8 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.rkc.zds.exceptions.AppException;
 import com.rkc.zds.Environment;
@@ -36,8 +38,10 @@ import com.rkc.zds.Environment;
  * example from http://www.devx.com/assets/sourcecode/10387.zip.
  */
 public class Encryption {
+	
+	/** Logger */
+	private static final Logger logger = LoggerFactory.getLogger(Encryption.class);
 
-	private static final AppLogger logger = AppLogger.getLogger(Encryption.class.getName());
 	public static final String DES_ALGORITHM = "DES";
 	public static final String ENCRYPTION_KEY = "Application Key 12345";
 

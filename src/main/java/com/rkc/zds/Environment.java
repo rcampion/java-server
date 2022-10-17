@@ -23,14 +23,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 // FIXME - remove this import
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.rkc.zds.db.QueryHandler;
 import com.rkc.zds.exceptions.AppException;
 import com.rkc.zds.utils.SortedProperties;
-import com.rkc.zds.utils.AppLogger;
 
 /**
  * The <code>Environment</code> class is instantiated as a singleton to
@@ -38,7 +41,9 @@ import com.rkc.zds.utils.AppLogger;
  * <code>application.properties</code> file.
  */
 public class Environment {
-	private static final AppLogger logger = AppLogger.getLogger(Environment.class.getName());
+	
+	/** Logger */
+	private static final Logger logger = LoggerFactory.getLogger(Environment.class);
 
 	public static final String PROP_BASE_COOKIE_EXPIRE = "cookie-expire";
 	public static final String PROP_BASE_DEFAULT_TOPIC = "default-topic";

@@ -17,8 +17,11 @@
 package com.rkc.zds.db;
 
 import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.rkc.zds.Environment;
-import com.rkc.zds.utils.AppLogger;
 
 /**
  * MySQL-specific implementation of the QueryHandler interface.  This class implements
@@ -26,8 +29,10 @@ import com.rkc.zds.utils.AppLogger;
  * ASCII SQL syntax.
  */
 public class MySqlQueryHandler extends AnsiQueryHandler {
-
-	private static final AppLogger logger = AppLogger.getLogger(MySqlQueryHandler.class.getName());
+	
+	/** Logger */
+	private static final Logger logger = LoggerFactory.getLogger(MySqlQueryHandler.class);
+	
 	private static final String SQL_PROPERTY_FILE_NAME = "sql/sql.mysql.properties";
 
 	/**

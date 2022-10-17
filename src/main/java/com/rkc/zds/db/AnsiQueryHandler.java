@@ -25,9 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.rkc.zds.Environment;
 import com.rkc.zds.dto.BookDto;
-import com.rkc.zds.utils.AppLogger;
 import com.rkc.zds.utils.Pagination;
 
 /**
@@ -36,8 +38,10 @@ import com.rkc.zds.utils.Pagination;
  * should therefore work with any fully ANSI-compliant database.
  */
 public class AnsiQueryHandler implements QueryHandler {
-
-	private static final AppLogger logger = AppLogger.getLogger(AnsiQueryHandler.class.getName());
+	
+	/** Logger */
+	private static final Logger logger = LoggerFactory.getLogger(AnsiQueryHandler.class);
+	
 	protected static final String SQL_PROPERTY_FILE_NAME = "sql/sql.ansi.properties";
 	
 	protected static String STATEMENT_CONNECTION_VALIDATION_QUERY = null;
@@ -46,18 +50,16 @@ public class AnsiQueryHandler implements QueryHandler {
 	protected static String STATEMENT_CREATE_BOOKS_TABLE = null;
 	protected static String STATEMENT_CREATE_CATEGORY_TABLE = null;
 	protected static String STATEMENT_CREATE_CATEGORY_INDEX = null;
-	
+
+	protected static String STATEMENT_DELETE_AUTHORITIES = null;	
 	protected static String STATEMENT_DELETE_BOOK = null;
-	protected static String STATEMENT_DELETE_AUTHORITIES = null;
 	
 	protected static String STATEMENT_DROP_AUTHORITIES_TABLE = null;
 	protected static String STATEMENT_DROP_BOOKS_TABLE = null;
 	protected static String STATEMENT_DROP_CATEGORY_TABLE = null;
-	
-	protected static String STATEMENT_INSERT_BOOK = null;
-	//protected static String STATEMENT_INSERT_BOOK_AUTO_INCREMENT = null;
 
-	protected static String STATEMENT_INSERT_AUTHORITY = null;
+	protected static String STATEMENT_INSERT_AUTHORITY = null;	
+	protected static String STATEMENT_INSERT_BOOK = null;
 	protected static String STATEMENT_INSERT_CATEGORY = null;
 	
 	protected static String STATEMENT_SELECT_BOOKS = null;

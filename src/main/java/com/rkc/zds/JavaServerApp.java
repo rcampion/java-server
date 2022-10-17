@@ -1,36 +1,26 @@
 package com.rkc.zds;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Executors;
-
-import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import com.rkc.zds.linkedlist.SinglyLinkedList;
-//import com.rkc.zds.linkedlist.impl.SinglyLinkedListImpl;
-//import com.rkc.zds.web.spring.wiki.WikiBase;
 import com.rkc.zds.db.AnsiDataHandler;
 import com.rkc.zds.web.controller.BookController;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
 
 /**
  * @author rcampion
  */
 public class JavaServerApp {
 
-	//private static final Logger logger = LoggerFactory.getLogger(JavaServerApp.class);
+	private static final Logger logger = LoggerFactory.getLogger(JavaServerApp.class);
 
 	private static JavaServerApp instance = null;
 

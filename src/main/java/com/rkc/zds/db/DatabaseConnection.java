@@ -17,28 +17,30 @@
 package com.rkc.zds.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.commons.lang3.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.rkc.zds.Environment;
-//import com.rkc.zds.web.spring.wiki.utils.ResourceUtil;
-import com.rkc.zds.utils.AppLogger;
 
 /**
  * This class provides methods for retrieving database connections, executing queries,
  * and setting up connection pools.
  */
 public class DatabaseConnection {
+	
+	/** Logger */	
+	private static final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
-	private static final AppLogger logger = AppLogger.getLogger(DatabaseConnection.class.getName());
 	private static DataSource dataSource = null;
 	//private static DataSourceTransactionManager transactionManager = null;
 
