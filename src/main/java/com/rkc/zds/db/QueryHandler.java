@@ -168,9 +168,9 @@ public interface QueryHandler {
 	/**
 	 * Delete a book record in the database.
 	 *
-	 * @param book The Book record that is to be deleted in the database.
+	 * @param bookId The Id of the Book record that is to be deleted in the database.
 	 * @throws SQLException Thrown if any error occurs during method execution.
 	 */
-	void deleteBook(BookDto book) throws SQLException;
+	void deleteBook(int bookId) throws SQLException;
 
 }

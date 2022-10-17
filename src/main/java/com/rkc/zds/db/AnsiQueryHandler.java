@@ -325,24 +325,10 @@ public class AnsiQueryHandler implements QueryHandler {
 	}
 	
 	/**
-	 *
+	 * 
 	 */
-	public void insertBook(BookDto book) throws SQLException {
-		PreparedStatement stmt = null;
-		try {
-			Connection conn = DatabaseConnection.getConnection();
-			stmt = conn.prepareStatement(STATEMENT_INSERT_BOOK);
-			stmt.setString(1, book.getTitle());
-			stmt.setString(2, book.getAuthor());
-			stmt.setInt(3, book.getCategory());
-			stmt.executeUpdate();
-		} finally {
-			DatabaseConnection.closeStatement(stmt);
-		}
-	}
-	
 	@Override
-	public void deleteBook(BookDto book) throws SQLException {
+	public void deleteBook(int bookId) throws SQLException {
 		// TODO Auto-generated method stub
 
 	}

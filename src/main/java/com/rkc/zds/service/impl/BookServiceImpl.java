@@ -94,4 +94,15 @@ public class BookServiceImpl implements BookService {
 		}		
 	}
 
+	@Override
+	public void deleteBook(int bookId) {
+		try {
+			JavaServerApp.getDataHandler().deleteBook(bookId);
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+	}
+
 }

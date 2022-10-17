@@ -2,8 +2,6 @@ package com.rkc.zds.web.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +13,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.rkc.zds.JavaServerApp;
-
 import com.rkc.zds.dto.BookDto;
 import com.rkc.zds.service.BookService;
 import com.rkc.zds.service.impl.BookServiceImpl;
@@ -150,7 +147,7 @@ public class BookController {
 
 					byte[] data = new byte[contentLength];
 					int length = is.read(data);
-									
+
 					ObjectMapper mapper = new ObjectMapper();
 
 					BookDto book = new BookDto();
@@ -166,9 +163,9 @@ public class BookController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 					bookService.updateBook(book);
-					
+
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 					String json = null;
 					try {
@@ -179,7 +176,7 @@ public class BookController {
 					}
 
 					JavaServerApp.writeResponse(httpExchange, json.toString());
-					
+
 					httpExchange.close();
 
 				} catch (Exception e) {
@@ -216,9 +213,9 @@ public class BookController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 					bookService.saveBook(book);
-					
+
 					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 					String json = null;
 					try {
@@ -229,7 +226,7 @@ public class BookController {
 					}
 
 					JavaServerApp.writeResponse(httpExchange, json.toString());
-					
+
 					httpExchange.close();
 
 					httpExchange.close();
@@ -237,6 +234,12 @@ public class BookController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			} else if (httpExchange.getRequestMethod().equalsIgnoreCase("DELETE")) {
+				
+				int bookId = Integer.parseInt(lastSegment);
+				
+				bookService.deleteBook(bookId)	;	
+			
 			}
 		}
 	}

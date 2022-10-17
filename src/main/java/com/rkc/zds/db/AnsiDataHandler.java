@@ -182,11 +182,11 @@ public class AnsiDataHandler {
 	 * @throws DataAccessException Thrown if any error occurs during method
 	 *                             execution.
 	 */
-	public void deleteBook(BookDto book) throws DataAccessException {
+	public void deleteBook(int bookId) throws DataAccessException {
 		Connection conn = null;
 		try {
 			conn = DatabaseConnection.getConnection();
-			this.queryHandler().deleteBook(book);
+			this.queryHandler().deleteBook(bookId);
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		} finally {

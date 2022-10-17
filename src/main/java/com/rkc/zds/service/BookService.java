@@ -14,4 +14,6 @@ public interface BookService {
 
 	void saveBook(BookDto book);
 	
+	void deleteBook(int bookId);
+	
 }
