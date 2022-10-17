@@ -39,8 +39,7 @@ public class AnsiQueryHandler implements QueryHandler {
 
 	private static final AppLogger logger = AppLogger.getLogger(AnsiQueryHandler.class.getName());
 	protected static final String SQL_PROPERTY_FILE_NAME = "sql/sql.ansi.properties";
-
-
+	
 	protected static String STATEMENT_CONNECTION_VALIDATION_QUERY = null;
 
 	protected static String STATEMENT_CREATE_AUTHORITIES_TABLE = null;
@@ -48,7 +47,7 @@ public class AnsiQueryHandler implements QueryHandler {
 	protected static String STATEMENT_CREATE_CATEGORY_TABLE = null;
 	protected static String STATEMENT_CREATE_CATEGORY_INDEX = null;
 	
-	protected static String STATEMENT_DELETE_BOOKS = null;
+	protected static String STATEMENT_DELETE_BOOK = null;
 	protected static String STATEMENT_DELETE_AUTHORITIES = null;
 	
 	protected static String STATEMENT_DROP_AUTHORITIES_TABLE = null;
@@ -149,16 +148,14 @@ public class AnsiQueryHandler implements QueryHandler {
 	protected void init(Properties properties) {
 		this.props = properties;
 
-
 		STATEMENT_CONNECTION_VALIDATION_QUERY = props.getProperty("STATEMENT_CONNECTION_VALIDATION_QUERY");
 
 		STATEMENT_CREATE_AUTHORITIES_TABLE = props.getProperty("STATEMENT_CREATE_AUTHORITIES_TABLE");
 		STATEMENT_CREATE_CATEGORY_TABLE = props.getProperty("STATEMENT_CREATE_CATEGORY_TABLE");
 		STATEMENT_CREATE_CATEGORY_INDEX = props.getProperty("STATEMENT_CREATE_CATEGORY_INDEX");
-		STATEMENT_DELETE_AUTHORITIES = props.getProperty("STATEMENT_DELETE_AUTHORITIES");
-
-		STATEMENT_DELETE_AUTHORITIES = props.getProperty("STATEMENT_DELETE_AUTHORITIES");
 		
+		STATEMENT_DELETE_AUTHORITIES = props.getProperty("STATEMENT_DELETE_AUTHORITIES");
+		STATEMENT_DELETE_BOOK= props.getProperty("STATEMENT_DELETE_BOOK");
 		
 		STATEMENT_DROP_AUTHORITIES_TABLE = props.getProperty("STATEMENT_DROP_AUTHORITIES_TABLE");
 		STATEMENT_DROP_CATEGORY_TABLE = props.getProperty("STATEMENT_DROP_CATEGORY_TABLE");
@@ -268,7 +265,6 @@ public class AnsiQueryHandler implements QueryHandler {
 		} finally {
 			DatabaseConnection.closeStatement(stmt);
 		}
-
 	}
 
 	@Override
@@ -303,7 +299,6 @@ public class AnsiQueryHandler implements QueryHandler {
 				DatabaseConnection.closeConnection(null, stmt, rs);
 			}
 		}
-
 	}
 
 	@Override
@@ -321,7 +316,6 @@ public class AnsiQueryHandler implements QueryHandler {
 		} finally {
 			DatabaseConnection.closeStatement(stmt);
 		}
-
 	}
 	
 	/**
@@ -329,8 +323,17 @@ public class AnsiQueryHandler implements QueryHandler {
 	 */
 	@Override
 	public void deleteBook(int bookId) throws SQLException {
-		// TODO Auto-generated method stub
-
+		PreparedStatement stmt = null;
+		
+		String id = String.valueOf(bookId); 
+		try {
+			Connection conn = DatabaseConnection.getConnection();
+			stmt = conn.prepareStatement(STATEMENT_DELETE_BOOK);
+			stmt.setString(1, id);
+			stmt.executeUpdate();
+		} finally {
+			DatabaseConnection.closeStatement(stmt);
+		}
 	}
 
 	/**

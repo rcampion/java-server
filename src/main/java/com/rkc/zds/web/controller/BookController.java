@@ -65,7 +65,7 @@ public class BookController {
 
 				httpExchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
 
-				httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS");
+				httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, PUT, GET, DELETE, OPTIONS");
 
 				httpExchange.sendResponseHeaders(204, -1);
 
@@ -238,7 +238,19 @@ public class BookController {
 				
 				int bookId = Integer.parseInt(lastSegment);
 				
-				bookService.deleteBook(bookId)	;	
+				BookDto book = bookService.findOne(bookId);
+				ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+				String json = null;
+				try {
+					json = ow.writeValueAsString(book);
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				bookService.deleteBook(bookId);	
+
+				JavaServerApp.writeResponse(httpExchange, json.toString());
 			
 			}
 		}
